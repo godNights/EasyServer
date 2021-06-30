@@ -8,3 +8,4 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O0")
 
 add_subdirectory(src)
+add_subdirectory(stressTest)
