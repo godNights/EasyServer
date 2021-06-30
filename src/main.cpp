@@ -2,8 +2,8 @@
 
 int main(int argc, char *argv[])
 {
-    EasyServer server;
-    server.test();
+    EasyServer server("127.0.0.1", 12345, 3);
+    server.Run();
 
     return 0;
 }
