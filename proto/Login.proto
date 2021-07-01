@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+message Login
+{
+    string senderCompId = 1;
+    string targetCompId = 2;
+    uint32 heartBt      = 3;
+}

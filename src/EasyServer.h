@@ -1,6 +1,10 @@
 #ifndef __EASY_SERVER_H
 #define __EASY_SERVER_H
 
+#include <arpa/inet.h>
+
+const int MAX_BUF_SIZE = 1024;
+
 class EasyServer
 {
 public:
@@ -12,13 +16,14 @@ public:
     void Run();
 
 private:
-    bool InitListenSocket();
+    bool InitListenFd();
 
 private:
-    int  m_iListenSocket;
-    char m_sIp[32];
-    int  m_iPort;
-    int  m_iBacklog;
+    int         m_iListenFd;
+    char        m_sIp[32];
+    int         m_iPort;
+    int         m_iBacklog;
+    sockaddr_in m_address;
 };
 
 

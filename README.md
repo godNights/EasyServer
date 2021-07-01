@@ -23,4 +23,17 @@
 - ./bootstrap
 - gmake
 - gmake install
+  
+## protobuf配置
 
+- yum -y install autoconf automake libtool curl make g++ unzip
+- wget  https://github.com/protocolbuffers/protobuf/releases/download/v3.7.1/protobuf-cpp-3.7.1.tar.gz
+- tar -xzvf protobuf-cpp-3.7.1.tar.gz
+- rm protobuf-cpp-3.7.1.tar.gz
+- cd protobuf-3.7.1/
+- ./autogen.sh 
+- ./configure
+- make
+- make check
+- sudo make install
+- sudo ldconfig
