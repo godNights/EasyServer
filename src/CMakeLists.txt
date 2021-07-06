@@ -4,6 +4,7 @@ set(PBSRCS
     ../proto/Login.pb.cc)
 
 set(SRCS
+    EasyServer.cpp
     main.cpp)
 
 find_package(Protobuf REQUIRED)
