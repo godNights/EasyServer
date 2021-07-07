@@ -15,7 +15,6 @@ public:
 
 public:
     bool Run();
-    int  SetBlocking(int fd, bool isBlocking);
 
 private:
     bool InitListenFd();

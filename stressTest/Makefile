@@ -87,14 +87,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/linqb/EasyServer/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/linqb/EasyServer/build/CMakeFiles /home/linqb/EasyServer/build/src//CMakeFiles/progress.marks
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/all
+	cd /home/linqb/EasyServer/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/linqb/EasyServer/build/CMakeFiles /home/linqb/EasyServer/build/stressTest//CMakeFiles/progress.marks
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stressTest/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/linqb/EasyServer/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/clean
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stressTest/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,12 +103,12 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stressTest/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stressTest/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
@@ -117,49 +117,49 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/EasyServer.dir/rule:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/EasyServer.dir/rule
-.PHONY : src/CMakeFiles/EasyServer.dir/rule
+stressTest/CMakeFiles/StressTest.dir/rule:
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 stressTest/CMakeFiles/StressTest.dir/rule
+.PHONY : stressTest/CMakeFiles/StressTest.dir/rule
 
 # Convenience name for target.
-EasyServer: src/CMakeFiles/EasyServer.dir/rule
-.PHONY : EasyServer
+StressTest: stressTest/CMakeFiles/StressTest.dir/rule
+.PHONY : StressTest
 
 # fast build rule for target.
-EasyServer/fast:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/build
-.PHONY : EasyServer/fast
+StressTest/fast:
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/build
+.PHONY : StressTest/fast
 
-EasyServer.o: EasyServer.cpp.o
-.PHONY : EasyServer.o
+StressTest.o: StressTest.cpp.o
+.PHONY : StressTest.o
 
 # target to build an object file
-EasyServer.cpp.o:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/EasyServer.cpp.o
-.PHONY : EasyServer.cpp.o
+StressTest.cpp.o:
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/StressTest.cpp.o
+.PHONY : StressTest.cpp.o
 
-EasyServer.i: EasyServer.cpp.i
-.PHONY : EasyServer.i
+StressTest.i: StressTest.cpp.i
+.PHONY : StressTest.i
 
 # target to preprocess a source file
-EasyServer.cpp.i:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/EasyServer.cpp.i
-.PHONY : EasyServer.cpp.i
+StressTest.cpp.i:
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/StressTest.cpp.i
+.PHONY : StressTest.cpp.i
 
-EasyServer.s: EasyServer.cpp.s
-.PHONY : EasyServer.s
+StressTest.s: StressTest.cpp.s
+.PHONY : StressTest.s
 
 # target to generate assembly for a file
-EasyServer.cpp.s:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/EasyServer.cpp.s
-.PHONY : EasyServer.cpp.s
+StressTest.cpp.s:
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/StressTest.cpp.s
+.PHONY : StressTest.cpp.s
 
 __/base/public.o: __/base/public.cpp.o
 .PHONY : __/base/public.o
 
 # target to build an object file
 __/base/public.cpp.o:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/__/base/public.cpp.o
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/__/base/public.cpp.o
 .PHONY : __/base/public.cpp.o
 
 __/base/public.i: __/base/public.cpp.i
@@ -167,7 +167,7 @@ __/base/public.i: __/base/public.cpp.i
 
 # target to preprocess a source file
 __/base/public.cpp.i:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/__/base/public.cpp.i
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/__/base/public.cpp.i
 .PHONY : __/base/public.cpp.i
 
 __/base/public.s: __/base/public.cpp.s
@@ -175,7 +175,7 @@ __/base/public.s: __/base/public.cpp.s
 
 # target to generate assembly for a file
 __/base/public.cpp.s:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/__/base/public.cpp.s
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/__/base/public.cpp.s
 .PHONY : __/base/public.cpp.s
 
 __/proto/testBuffer.pb.o: __/proto/testBuffer.pb.cc.o
@@ -183,7 +183,7 @@ __/proto/testBuffer.pb.o: __/proto/testBuffer.pb.cc.o
 
 # target to build an object file
 __/proto/testBuffer.pb.cc.o:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/__/proto/testBuffer.pb.cc.o
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/__/proto/testBuffer.pb.cc.o
 .PHONY : __/proto/testBuffer.pb.cc.o
 
 __/proto/testBuffer.pb.i: __/proto/testBuffer.pb.cc.i
@@ -191,7 +191,7 @@ __/proto/testBuffer.pb.i: __/proto/testBuffer.pb.cc.i
 
 # target to preprocess a source file
 __/proto/testBuffer.pb.cc.i:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/__/proto/testBuffer.pb.cc.i
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/__/proto/testBuffer.pb.cc.i
 .PHONY : __/proto/testBuffer.pb.cc.i
 
 __/proto/testBuffer.pb.s: __/proto/testBuffer.pb.cc.s
@@ -199,7 +199,7 @@ __/proto/testBuffer.pb.s: __/proto/testBuffer.pb.cc.s
 
 # target to generate assembly for a file
 __/proto/testBuffer.pb.cc.s:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/__/proto/testBuffer.pb.cc.s
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/__/proto/testBuffer.pb.cc.s
 .PHONY : __/proto/testBuffer.pb.cc.s
 
 main.o: main.cpp.o
@@ -207,7 +207,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/main.cpp.o
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -215,7 +215,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/main.cpp.i
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -223,7 +223,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/EasyServer.dir/build.make src/CMakeFiles/EasyServer.dir/main.cpp.s
+	cd /home/linqb/EasyServer/build && $(MAKE) $(MAKESILENT) -f stressTest/CMakeFiles/StressTest.dir/build.make stressTest/CMakeFiles/StressTest.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -234,10 +234,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... EasyServer"
-	@echo "... EasyServer.o"
-	@echo "... EasyServer.i"
-	@echo "... EasyServer.s"
+	@echo "... StressTest"
+	@echo "... StressTest.o"
+	@echo "... StressTest.i"
+	@echo "... StressTest.s"
 	@echo "... __/base/public.o"
 	@echo "... __/base/public.i"
 	@echo "... __/base/public.s"

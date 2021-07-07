@@ -1,7 +1,7 @@
 #include "EasyServer.h"
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <fcntl.h>
+#include "public.h"
 #include <unistd.h>
 #include <errno.h>
 #include <stdio.h>
@@ -90,19 +90,3 @@ bool EasyServer::InitListenFd()
     return true;
 }
 
-int EasyServer::SetBlocking(int fd, bool isBlocking)
-{
-    int oldOption = fcntl(fd, F_GETFL);
-    int newOption;
-    if (isBlocking)
-    {
-        newOption &= ~O_NONBLOCK;
-    }
-    else
-    {
-        newOption |= O_NONBLOCK;
-    }
-    fcntl(fd, F_SETFL, newOption);
-
-    return oldOption;
-}
