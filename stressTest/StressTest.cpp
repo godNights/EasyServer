@@ -43,7 +43,7 @@ bool StressTest::Run()
     std::thread recvThread(&StressTest::RecvThread, this);
 
     sendThread.join();
-    printf("message send complete, count[%s], time[%d]\n", m_iSendCount, time(NULL) - beginTime);
+    printf("message send complete, count[%d], time[%d]\n", m_iSendCount, time(NULL) - beginTime);
     recvThread.join();
     printf("message recv complete, count[%d], time[%d]\n", m_iRecvCount, time(NULL) - beginTime);
 }
@@ -56,6 +56,7 @@ void StressTest::SendThread()
     int sequence = 0;
     while ((time(NULL) - beginTime) < m_iSendTime)
     {
+        usleep(10);
         for (int i = 0; i != m_vClientFds.size(); ++i)
         {
             memset(buffer, 0, sizeof(buffer));
@@ -65,8 +66,9 @@ void StressTest::SendThread()
             clientBuffer.set_text("stressTest");
             clientBuffer.SerializePartialToArray(buffer, clientBuffer.ByteSize());
 
-            Send(m_vClientFds[i], buffer, clientBuffer.ByteSize());
+            SendMsg(m_vClientFds[i], buffer, clientBuffer.ByteSize());
             ++sequence;
+            ++m_iSendCount;
         }
 
     }
@@ -78,18 +80,27 @@ void StressTest::RecvThread()
 
     while (true)
     {
-        int fds = epoll_wait(m_iEpollFd, events, MAX_EVENTS, 2000);
+        int fds = 0;
+        do
+        {
+            fds = epoll_wait(m_iEpollFd, events, MAX_EVENTS, 5000);
+        } while (fds < 0 && errno == EINTR);
+        
         if (fds == 0)
         {
             return ;
         }
-        for (int i = 0; i != fds; ++i)
+        if (fds < 0)
+        {
+            printf("epoll_wait error, errno[%d]\n", errno);
+        }
+        for (int i = 0; i < fds; ++i)
         {
             int sockFd = events[i].data.fd;
             if (events[i].events & EPOLLIN)
             {
                 char buffer[1024];
-                Recv(sockFd, buffer);
+                RecvMsg(sockFd, buffer);
                 ++m_iRecvCount;
             }
             else if (events[i].events & EPOLLERR)
@@ -138,6 +149,7 @@ int StressTest::CreateConn(int num)
             continue;
         }
         AddFd(sockFd);
+        printf("create connect[%d]\n", sockFd);
         ++createSuccess;
     }
     return createSuccess;
