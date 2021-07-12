@@ -207,6 +207,7 @@ void EasyServer::Poll()
 
     clientPollFd[0].fd     = m_iListenFd;
     clientPollFd[0].events = POLLRDNORM;
+    std::vector<int> allFd;
 
     for (int i = 1; i < MAX_POLLFD; ++i)
     {
@@ -294,5 +295,78 @@ void EasyServer::Poll()
 
 void EasyServer::Epoll()
 {
+    m_iEpollFd = epoll_create(5);
+    AddFd(m_iListenFd);
+    epoll_event events[MAX_EVENT_NUMBER];
+    char buffer[1024];
+    socklen_t sockAddrLen = sizeof(sockaddr_in);
+    struct sockaddr_in cliAddr;
+    int sequence = 0;
 
+    while (true)
+    {
+        int result = epoll_wait(m_iEpollFd, events, MAX_EVENT_NUMBER, -1);
+
+        if (result < 0)
+        {
+            printf("epoll wait error[%d]", errno);
+            return ;
+        }
+        else
+        {
+            for (int i = 0; i < result; ++i)
+            {
+                int sockFd = events[i].data.fd;
+                if (sockFd == m_iListenFd)
+                {
+                    int clientFd = accept(m_iListenFd, (struct sockaddr *)&cliAddr, &sockAddrLen);
+                    if (clientFd < 0)
+                    {
+                        printf("accept error, errno[%d]\n", errno);
+                        continue;
+                    }
+                    printf("recv client connect[%d]\n", clientFd);
+                    AddFd(clientFd);
+                }
+                else if (events[i].events & EPOLLIN)
+                {
+                    memset(buffer, 0, sizeof(buffer));
+                    bool rtn = RecvMsg(sockFd, buffer);
+                    if (!rtn)
+                    {
+                        close(sockFd);
+                        epoll_ctl(m_iEpollFd, EPOLL_CTL_DEL, sockFd, NULL);
+                        continue;
+                    }
+
+                    memset(buffer, 0, sizeof(buffer));
+                    ServerBuffer serverBuffer;
+                    serverBuffer.set_sequence(++sequence);
+                    serverBuffer.SerializePartialToArray(buffer, serverBuffer.ByteSize());
+
+                    rtn = SendMsg(sockFd, buffer, serverBuffer.ByteSize());
+                    if (!rtn)
+                    {
+                        close(sockFd);
+                        epoll_ctl(m_iEpollFd, EPOLL_CTL_DEL, sockFd, NULL);
+                        continue;
+                    }
+                }
+                else
+                {
+                    printf("unknow event[%d]\n", events[i].events);
+                }
+            }
+        }
+    }
+
+}
+
+void EasyServer::AddFd(int fd)
+{
+    epoll_event event;
+    event.data.fd = fd;
+    event.events = EPOLLIN | EPOLLET;
+    epoll_ctl(m_iEpollFd, EPOLL_CTL_ADD, fd, &event);
+    SetBlocking(fd, false);
 }

@@ -37,3 +37,10 @@
 - make check
 - sudo make install
 - sudo ldconfig
+
+## 执行
+
+- cd EasyServer/build/
+- sh build.sh
+- src/EasyServer -i127.0.0.1 -p12345 -b128 -m2         //i=ip, p=port, b=backlog, m=mode 
+- stressTest/StressTest -i127.0.0.1 -p12345 -c5 -s2    //i=ip, p=port, c=connNum, s=sendTime 

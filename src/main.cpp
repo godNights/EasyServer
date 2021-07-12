@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     int opt;
     const char *optString = "i::p::b::m::";
 
-    /*while ((opt = getopt(argc, argv, optString)) != -1)
+    while ((opt = getopt(argc, argv, optString)) != -1)
     {
         switch (opt)
         {
@@ -42,9 +42,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
-    printf("%s %d %d %d\n", ip.c_str(), port, backlog, mode);*/
-    
+  
     EasyServer server(ip, port, backlog, mode);
     server.Run();
 

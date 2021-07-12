@@ -47,6 +47,7 @@ bool StressTest::Run()
     printf("message send complete, count[%d], time[%d]\n", m_iSendCount, time(NULL) - beginTime);
     recvThread.join();
     printf("message recv complete, count[%d], time[%d]\n", m_iRecvCount, time(NULL) - beginTime);
+    return true;
 }
 
 void StressTest::SendThread()
@@ -58,7 +59,7 @@ void StressTest::SendThread()
     while ((time(NULL) - beginTime) < m_iSendTime)
     {
         usleep(10);
-        for (int i = 0; i != m_vClientFds.size(); ++i)
+        for (size_t i = 0; i < m_vClientFds.size(); ++i)
         {
             memset(buffer, 0, sizeof(buffer));
             clientBuffer.Clear();
@@ -71,7 +72,6 @@ void StressTest::SendThread()
             ++sequence;
             ++m_iSendCount;
         }
-
     }
     m_bSendComplete = true;
 }

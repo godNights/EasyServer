@@ -4,9 +4,10 @@
 #include <string>
 #include <arpa/inet.h>
 
-const int MAX_BUF_SIZE = 1024;
-const int MAX_POLLFD   = 1024;
-const int MAX_SELECTFD = 1024;
+const int MAX_BUF_SIZE     = 1024;
+const int MAX_POLLFD       = 1024;
+const int MAX_SELECTFD     = 1024;
+const int MAX_EVENT_NUMBER = 1024;
 
 
 enum ServerMode
@@ -31,6 +32,7 @@ private:
     void Select();
     void Poll();
     void Epoll();
+    void AddFd(int fd);
 
 private:
     int           m_iListenFd;
@@ -39,6 +41,7 @@ private:
     int           m_iBacklog;
     sockaddr_in   m_address;
     ServerMode    m_serverMode;
+    int           m_iEpollFd;
 };
 
 
