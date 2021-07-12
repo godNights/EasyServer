@@ -5,6 +5,8 @@
 #include <arpa/inet.h>
 
 const int MAX_BUF_SIZE = 1024;
+const int MAX_POLLFD   = 1024;
+const int MAX_SELECTFD = 1024;
 
 
 enum ServerMode

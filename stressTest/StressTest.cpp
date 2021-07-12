@@ -17,7 +17,8 @@ StressTest::StressTest(const std::string &ip, int port, int connNum, int sendTim
     m_iConnNum(connNum),
     m_iSendTime(sendTime),
     m_iSendCount(0),
-    m_iRecvCount(0)
+    m_iRecvCount(0),
+    m_bSendComplete(false)
 {
     
 }
@@ -72,6 +73,7 @@ void StressTest::SendThread()
         }
 
     }
+    m_bSendComplete = true;
 }
 
 void StressTest::RecvThread()
@@ -102,6 +104,10 @@ void StressTest::RecvThread()
                 char buffer[1024];
                 RecvMsg(sockFd, buffer);
                 ++m_iRecvCount;
+                if (m_iRecvCount >= m_iSendCount && m_bSendComplete)
+                {
+                    return ;
+                }
             }
             else if (events[i].events & EPOLLERR)
             {

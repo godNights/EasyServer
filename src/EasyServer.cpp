@@ -12,6 +12,7 @@
 #include <sys/epoll.h>
 #include <testBuffer.pb.h>
 
+
 EasyServer::EasyServer() :
     m_iPort(8019),
     m_sIp("127.0.0.1"),
@@ -68,25 +69,6 @@ bool EasyServer::Run()
     }
 
     return true;
-
-
-    /*int conFd = accept(m_iListenFd, (struct sockaddr *)&m_address, &addrLen);
-
-    if (conFd < 0)
-    {
-        printf("accept error, errno[%d]\n", errno);
-    }
-    else
-    {
-        char buffer[MAX_BUF_SIZE];
-        memset(buffer, 0, sizeof(buffer));
-
-        while (true)
-        {
-
-        }
-        
-    }*/
 
 }
 
@@ -153,8 +135,6 @@ void EasyServer::Select()
         }
         if (FD_ISSET(m_iListenFd, &readSet))
         {
-            size_t len = sizeof(sockaddr_in);
-
             int clientFd = accept(m_iListenFd, (struct sockaddr *)&cliAddr, &sockAddrLen);
             if (clientFd < 0)
             {
@@ -166,45 +146,150 @@ void EasyServer::Select()
             FD_SET(clientFd, &allSet);
             allFd.push_back(clientFd);
 
-            maxFd = maxFd > clientFd ? maxFd : clientFd;
-        }
-        else
-        {
-            for (int fd : allFd)
+            if (allFd.size() >= MAX_SELECTFD)
             {
-                if (FD_ISSET(fd, &readSet))
+                perror("too much connect");
+                continue;
+            }
+
+            maxFd = maxFd > clientFd ? maxFd : clientFd;
+
+            if (--result <= 0)
+            {
+                continue;
+            }
+        }
+
+        for (int fd : allFd)
+        {
+            if (FD_ISSET(fd, &readSet))
+            {
+                memset(buffer, 0, sizeof(buffer));
+                bool rtn = RecvMsg(fd, buffer);
+                if (!rtn)
                 {
-                    memset(buffer, 0, sizeof(buffer));
-                    bool rtn = RecvMsg(fd, buffer);
-                    if (!rtn)
-                    {
-                        close(fd);
-                        FD_CLR(fd, &allSet);
-                        continue;
-                    }
+                    close(fd);
+                    FD_CLR(fd, &allSet);
+                    continue;
+                }
 
-                    memset(buffer, 0, sizeof(buffer));
-                    ServerBuffer serverBuffer;
-                    serverBuffer.set_sequence(++sequence);
-                    serverBuffer.SerializePartialToArray(buffer, serverBuffer.ByteSize());
+                memset(buffer, 0, sizeof(buffer));
+                ServerBuffer serverBuffer;
+                serverBuffer.set_sequence(++sequence);
+                serverBuffer.SerializePartialToArray(buffer, serverBuffer.ByteSize());
 
-                    rtn = SendMsg(fd, buffer, serverBuffer.ByteSize());
-                    if (!rtn)
-                    {
-                        close(fd);
-                        FD_CLR(fd, &allSet);
-                        continue;
-                    }
+                rtn = SendMsg(fd, buffer, serverBuffer.ByteSize());
+                if (!rtn)
+                {
+                    close(fd);
+                    FD_CLR(fd, &allSet);
+                    continue;
+                }
+                if (--result <= 0)
+                {
+                    break;
                 }
             }
-        }         
+        }
+            
     }
     close(m_iListenFd);
 }
 
 void EasyServer::Poll()
 {
+    int maxFd = m_iListenFd;
+    pollfd clientPollFd[MAX_POLLFD];
+    socklen_t sockAddrLen = sizeof(sockaddr_in);
+    struct sockaddr_in cliAddr;
+    char buffer[1024];
+    int sequence = 0;
 
+    clientPollFd[0].fd     = m_iListenFd;
+    clientPollFd[0].events = POLLRDNORM;
+
+    for (int i = 1; i < MAX_POLLFD; ++i)
+    {
+        clientPollFd[i].fd = -1;
+    }
+
+    while (true)
+    {
+        int result = poll(clientPollFd, maxFd + 1, NULL);
+
+        if (clientPollFd[0].revents & POLLRDNORM)
+        {
+            int clientFd = accept(m_iListenFd, (struct sockaddr *)&cliAddr, &sockAddrLen);
+            if (clientFd < 0)
+            {
+                 printf("accept error, errno[%d]\n", errno);
+                 continue;
+            }
+            printf("recv client connect[%d]\n", clientFd);
+            SetBlocking(clientFd, false);
+            int i = 1;
+
+            for (; i < MAX_POLLFD; ++i)
+            {
+                if (clientPollFd[i].fd < 0)
+                {
+                    clientPollFd[i].fd     = clientFd;
+                    clientPollFd[i].events = POLLRDNORM;
+                    break;
+                }
+            }
+
+            if (i >= MAX_POLLFD)
+            {
+                perror("too much connect");
+                continue;
+            }
+
+            maxFd = maxFd > clientFd ? maxFd : clientFd;
+
+            if (--result <= 0)
+            {
+                continue;
+            }
+        }
+        for (int i = 1; i <= maxFd; ++i)
+        {
+            int sockFd = clientPollFd[i].fd;
+            if (sockFd < 0)
+            {
+                continue;
+            }
+            if (clientPollFd[i].revents & POLLRDNORM)
+            {
+                memset(buffer, 0, sizeof(buffer));
+                bool rtn = RecvMsg(sockFd, buffer);
+                if (!rtn)
+                {
+                    close(sockFd);
+                    clientPollFd[i].fd = -1;
+                    continue;
+                }
+
+                memset(buffer, 0, sizeof(buffer));
+                ServerBuffer serverBuffer;
+                serverBuffer.set_sequence(++sequence);
+                serverBuffer.SerializePartialToArray(buffer, serverBuffer.ByteSize());
+
+                rtn = SendMsg(sockFd, buffer, serverBuffer.ByteSize());
+                if (!rtn)
+                {
+                    close(sockFd);
+                    clientPollFd[i].fd = -1;
+                    continue;
+                }
+                if (--result <= 0)
+                {
+                    break;
+                }
+            }
+        }
+
+    }
 }
 
 void EasyServer::Epoll()

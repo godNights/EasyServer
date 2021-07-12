@@ -31,6 +31,7 @@ private:
     int              m_iSendCount;
     int              m_iRecvCount;
     std::vector<int> m_vClientFds;
+    bool             m_bSendComplete;
 };
 
 
